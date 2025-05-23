@@ -40,10 +40,13 @@ export async function POST(request: NextRequest) {
     // Return a success response to the client using NextResponse.json()
     return NextResponse.json({ message: 'Booking successfully submitted!', data: result }, { status: 200 });
 
-  } catch (error:any) {
+  } catch (error:unknown) {
     console.error('Error in API route:', error); // Log any unexpected errors
     // Return a 500 Internal Server Error for any unhandled exceptions
-    return NextResponse.json({ message: 'Internal Server Error', error: error.message }, { status: 500 });
+    return NextResponse.json({ 
+      message: 'Internal Server Error', 
+      error: typeof error === 'object' && error !== null && 'message' in error ? (error as { message: string }).message : String(error) 
+    }, { status: 500 });
   }
 }
 
