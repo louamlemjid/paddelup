@@ -168,9 +168,13 @@ function Book() {
         phone: '',
       });
       setStep(1); // Reset to first step after successful submission
-    } catch (error: any) {
+    } catch (error:unknown) {
       console.error('Error submitting booking:', error);
-      setMessage(`Failed to submit booking: ${error.message}`);
+      setMessage(
+        `Failed to submit booking: ${
+          error instanceof Error ? error.message : String(error)
+        }`
+      );
       setMessageType('error');
     } finally {
       setIsLoading(false);
